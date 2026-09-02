@@ -65,8 +65,121 @@ public class EscapeRoom
     boolean play = true;
     while (play)
     {
-      /* TODO: get all the commands working */
-	  /* Your code here */
+      System.out.print(">");
+      String cmd = UserInput.getValidInput(validCommands).toLowerCase();
+
+      // basic movement increments
+      int incrx = 0;
+      int incry = 0;
+      int moveScore = 0;
+
+      // handle quit
+      if (cmd.equals("quit") || cmd.equals("q"))
+      {
+        play = false; // end game loop
+      }
+      // help
+      else if (cmd.equals("help") || cmd.equals("?"))
+      {
+        System.out.println("Valid commands:");
+        for (String s : validCommands)
+          System.out.print(s + " ");
+        System.out.println();
+      }
+      // pickup prize
+      else if (cmd.equals("pickup") || cmd.equals("p"))
+      {
+        score += game.pickupPrize(); // pickupPrize returns +/- value
+      }
+      // replay
+      else if (cmd.equals("replay"))
+      {
+        System.out.println("Replaying. Your score=" + score + " steps=" + game.getSteps());
+        score = 0; // reset score as required
+        game.replay();
+        System.out.println("Game has been reset.");
+      }
+      // jump movements (move two spaces)
+      else if (cmd.equals("jump") || cmd.equals("jr") || cmd.equals("jumpright"))
+      {
+        incrx = m * 2;
+        // check/spring trap ahead, award if present
+        if (game.isTrap(incrx, incry))
+          score += game.springTrap(incrx, incry);
+        moveScore = game.movePlayer(incrx, incry);
+        score++; // increment player's score after every move
+        score += moveScore;
+      }
+      else if (cmd.equals("jumpleft") || cmd.equals("jl"))
+      {
+        incrx = -m * 2;
+        if (game.isTrap(incrx, incry))
+          score += game.springTrap(incrx, incry);
+        moveScore = game.movePlayer(incrx, incry);
+        score++;
+        score += moveScore;
+      }
+      else if (cmd.equals("jumpup") || cmd.equals("ju"))
+      {
+        incry = -m * 2;
+        if (game.isTrap(incrx, incry))
+          score += game.springTrap(incrx, incry);
+        moveScore = game.movePlayer(incrx, incry);
+        score++;
+        score += moveScore;
+      }
+      else if (cmd.equals("jumpdown") || cmd.equals("jd"))
+      {
+        incry = m * 2;
+        if (game.isTrap(incrx, incry))
+          score += game.springTrap(incrx, incry);
+        moveScore = game.movePlayer(incrx, incry);
+        score++;
+        score += moveScore;
+      }
+      // basic single-space movements
+      else if (cmd.equals("right") || cmd.equals("r"))
+      {
+        incrx = m;
+        if (game.isTrap(incrx, incry))
+          score += game.springTrap(incrx, incry);
+        moveScore = game.movePlayer(incrx, incry);
+        score++;
+        score += moveScore;
+      }
+      else if (cmd.equals("left") || cmd.equals("l"))
+      {
+        incrx = -m;
+        if (game.isTrap(incrx, incry))
+          score += game.springTrap(incrx, incry);
+        moveScore = game.movePlayer(incrx, incry);
+        score++;
+        score += moveScore;
+      }
+      else if (cmd.equals("up") || cmd.equals("u"))
+      {
+        incry = -m;
+        if (game.isTrap(incrx, incry))
+          score += game.springTrap(incrx, incry);
+        moveScore = game.movePlayer(incrx, incry);
+        score++;
+        score += moveScore;
+      }
+      else if (cmd.equals("down") || cmd.equals("d"))
+      {
+        incry = m;
+        if (game.isTrap(incrx, incry))
+          score += game.springTrap(incrx, incry);
+        moveScore = game.movePlayer(incrx, incry);
+        score++;
+        score += moveScore;
+      }
+      else
+      {
+        // invalid command: deduct points
+        System.out.println("Invalid command");
+        score -= 1;
+      }
     
       
     }
