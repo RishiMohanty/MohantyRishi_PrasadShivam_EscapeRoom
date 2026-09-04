@@ -85,7 +85,7 @@ public class EscapeRoom
             else if (moveDelta[0] != 0 || moveDelta[1] != 0)
             {
                 moveScore = game.movePlayer(moveDelta[0], moveDelta[1]);
-                score++;
+                score -= 1;
                 score += moveScore;
                 if (game.hasReachedEnd())
                 {

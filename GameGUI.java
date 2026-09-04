@@ -40,10 +40,11 @@ public class GameGUI extends JComponent
     private boolean gameEnded;
 
     private int prizeVal = 10;
-    private int trapVal = 5;
-    private int endVal = 10;
+    private int trapVal = 10;
+    private int endVal = 15;
     private int offGridVal = 5;
     private int hitWallVal = 5;
+    private int speedPenaltyPerStep = 1;
 
     private JFrame frame;
 
@@ -203,6 +204,12 @@ public class GameGUI extends JComponent
         }
         System.out.println("OOPS, NO PRIZE HERE");
         return -prizeVal;
+    }
+
+    public int getSpeedScore()
+    {
+        int score = endVal - (playerSteps / 2 * speedPenaltyPerStep);
+        return Math.max(0, score);
     }
 
     public int getSteps()
@@ -365,11 +372,12 @@ public class GameGUI extends JComponent
     {
         if (hasReachedEnd())
         {
-            System.out.println("YOU MADE IT!");
-            return endVal;
+            int speedScore = getSpeedScore();
+            System.out.println("YOU MADE IT! Final score: " + speedScore + " with " + playerSteps + " steps");
+            return speedScore;
         }
 
         System.out.println("OOPS, YOU QUIT TOO SOON!");
-        return -endVal;
+        return -(endVal / 2);
     }
 }
