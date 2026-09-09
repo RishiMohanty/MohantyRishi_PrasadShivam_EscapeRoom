@@ -90,7 +90,7 @@ public class GameGUI extends JComponent
 
         totalWalls = 20;
         totalPrizes = 3;
-        totalTraps = 5;
+        totalTraps = 8;
     }
 
     public void createBoard()
@@ -103,6 +103,7 @@ public class GameGUI extends JComponent
 
         walls = new Rectangle[totalWalls];
         createWalls();
+        alertNearbyTraps();
     }
 
     public int movePlayer(int incrx, int incry)
@@ -149,7 +150,31 @@ public class GameGUI extends JComponent
         x += incrx;
         y += incry;
         repaint();
+        alertNearbyTraps();
         return 0;
+    }
+
+    public boolean isTrapAtOffset(int offx, int offy)
+    {
+        double px = x + offx;
+        double py = y + offy;
+
+        for (Rectangle r : traps)
+        {
+            if (r.getWidth() > 0 && r.contains(px, py))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void alertNearbyTraps()
+    {
+        if (isTrapAtOffset(SPACE_SIZE, 0) || isTrapAtOffset(-SPACE_SIZE, 0) || isTrapAtOffset(0, -SPACE_SIZE) || isTrapAtOffset(0, SPACE_SIZE))
+        {
+            System.out.println("trap nearby");
+        }
     }
 
     public boolean isTrap(int newx, int newy)
