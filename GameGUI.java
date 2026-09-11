@@ -90,7 +90,7 @@ public class GameGUI extends JComponent
 
         totalWalls = 20;
         totalPrizes = 3;
-        totalTraps = 8;
+        totalTraps = 4;
     }
 
     public void createBoard()
@@ -149,6 +149,19 @@ public class GameGUI extends JComponent
 
         x += incrx;
         y += incry;
+        playerLoc.setLocation(x, y);
+
+        for (Rectangle r : traps)
+        {
+            if (r.getWidth() > 0 && new Rectangle(x, y, 40, 40).intersects(r))
+            {
+                r.setSize(0, 0);
+                System.out.println("YOU LANDED ON A TRAP! -" + trapVal + " points. The trap is gone.");
+                repaint();
+                return -trapVal;
+            }
+        }
+
         repaint();
         alertNearbyTraps();
         return 0;

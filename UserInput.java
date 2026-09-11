@@ -48,9 +48,14 @@ public class UserInput
     public static void printCommands(String[] validCommands)
     {
         System.out.println("Valid commands:");
+        System.out.println("  help / ?  - show this command list");
+        System.out.println("  quit / q  - exit the game");
         for (String command : validCommands)
         {
-            System.out.print(command + " ");
+            if (!command.equals("help") && !command.equals("?") && !command.equals("quit") && !command.equals("q"))
+            {
+                System.out.print(command + " ");
+            }
         }
         System.out.println();
     }
