@@ -19,7 +19,7 @@ public class GameGUI extends JComponent
     private static final int SPACE_SIZE = 60;
     private static final int GRID_W = 8;
     private static final int GRID_H = 5;
-    private static final int START_LOC_X = 15;
+    private static final int START_LOC_X = 10;
     private static final int START_LOC_Y = 15;
 
     int x = START_LOC_X;
@@ -78,7 +78,7 @@ public class GameGUI extends JComponent
         }
 
         playerLoc = new Point(x, y);
-        endSquare = new Rectangle(WIDTH - SPACE_SIZE - 20, 2 * SPACE_SIZE + 15, SPACE_SIZE - 10, SPACE_SIZE - 10);
+        endSquare = new Rectangle(WIDTH - SPACE_SIZE - 30, 2 * SPACE_SIZE, SPACE_SIZE, SPACE_SIZE);
 
         frame = new JFrame();
         frame.setTitle("EscapeRoom");
