@@ -12,6 +12,7 @@ public class EscapeRoom
         int stepSize = 60;
         int score = 0;
         String[] validCommands = UserInput.getCommandList();
+        String[] directionOptions = UserInput.getDirectionOptions();
 
         boolean play = true;
         boolean endedByEndCommand = false;
@@ -44,8 +45,9 @@ public class EscapeRoom
             }
             else if (cmd.equals("check") || cmd.equals("c"))
             {
+                // Reuse the same direction input options for both trap checks.
                 System.out.print("Which direction? (r/l/u/d) ");
-                String dir = UserInput.getValidInput(new String[] {"right", "left", "up", "down", "r", "l", "u", "d"}).toLowerCase();
+                String dir = UserInput.getValidInput(directionOptions).toLowerCase();
                 int[] delta = UserInput.getDirectionDelta(dir);
                 boolean hasTrap = game.isTrap(delta[0], delta[1]);
                 if (hasTrap)
@@ -59,8 +61,9 @@ public class EscapeRoom
             }
             else if (cmd.equals("spring") || cmd.equals("s"))
             {
+                // Springing uses the same direction mapping as checking a trap.
                 System.out.print("Which direction to spring? (r/l/u/d) ");
-                String dir = UserInput.getValidInput(new String[] {"right", "left", "up", "down", "r", "l", "u", "d"}).toLowerCase();
+                String dir = UserInput.getValidInput(directionOptions).toLowerCase();
                 int[] delta = UserInput.getDirectionDelta(dir);
                 if (game.isTrap(delta[0], delta[1]))
                 {

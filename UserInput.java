@@ -4,6 +4,18 @@ public class UserInput
 {
     private static final Scanner SCANNER = new Scanner(System.in);
 
+    // Shared direction values used by both the check and spring commands.
+    private static final String[] DIRECTION_OPTIONS =
+    {
+        "right", "left", "up", "down",
+        "r", "l", "u", "d"
+    };
+
+    public static String[] getDirectionOptions()
+    {
+        return DIRECTION_OPTIONS.clone();
+    }
+
     public static String getValidInput(String[] validInputs)
     {
         String input;

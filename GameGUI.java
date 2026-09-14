@@ -169,12 +169,12 @@ public class GameGUI extends JComponent
 
     public boolean isTrapAtOffset(int offx, int offy)
     {
-        double px = x + offx;
-        double py = y + offy;
+        // Check the player's actual body rectangle one tile away instead of a single point.
+        Rectangle nearbyPlayer = new Rectangle(x + offx, y + offy, 40, 40);
 
         for (Rectangle r : traps)
         {
-            if (r.getWidth() > 0 && r.contains(px, py))
+            if (r.getWidth() > 0 && r.intersects(nearbyPlayer))
             {
                 return true;
             }
@@ -184,6 +184,7 @@ public class GameGUI extends JComponent
 
     public void alertNearbyTraps()
     {
+        // Warn when a trap is adjacent in any of the four cardinal directions.
         if (isTrapAtOffset(SPACE_SIZE, 0) || isTrapAtOffset(-SPACE_SIZE, 0) || isTrapAtOffset(0, -SPACE_SIZE) || isTrapAtOffset(0, SPACE_SIZE))
         {
             System.out.println("trap nearby");
