@@ -192,12 +192,11 @@ public class GameGUI extends JComponent
 
     public boolean isTrap(int newx, int newy)
     {
-        double px = playerLoc.getX() + newx;
-        double py = playerLoc.getY() + newy;
+        Rectangle playerRect = new Rectangle(x + newx, y + newy, 40, 40);
 
         for (Rectangle r : traps)
         {
-            if (r.getWidth() > 0 && r.contains(px, py))
+            if (r.getWidth() > 0 && r.intersects(playerRect))
             {
                 System.out.println("A TRAP IS AHEAD");
                 return true;
@@ -208,12 +207,11 @@ public class GameGUI extends JComponent
 
     public int springTrap(int newx, int newy)
     {
-        double px = playerLoc.getX() + newx;
-        double py = playerLoc.getY() + newy;
+        Rectangle playerRect = new Rectangle(x + newx, y + newy, 40, 40);
 
         for (Rectangle r : traps)
         {
-            if (r.contains(px, py) && r.getWidth() > 0)
+            if (r.intersects(playerRect) && r.getWidth() > 0)
             {
                 r.setSize(0, 0);
                 System.out.println("TRAP IS SPRUNG!");
@@ -227,12 +225,11 @@ public class GameGUI extends JComponent
 
     public int pickupPrize()
     {
-        double px = playerLoc.getX();
-        double py = playerLoc.getY();
+        Rectangle playerRect = new Rectangle(x, y, 40, 40);
 
         for (Rectangle p : prizes)
         {
-            if (p.getWidth() > 0 && p.contains(px, py))
+            if (p.getWidth() > 0 && p.intersects(playerRect))
             {
                 System.out.println("YOU PICKED UP A PRIZE!");
                 p.setSize(0, 0);
