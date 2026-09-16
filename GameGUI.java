@@ -38,6 +38,12 @@ public class GameGUI extends JComponent
     private Rectangle[] traps;
     private Rectangle endSquare;
     private boolean gameEnded;
+    private boolean hasPreviousMove;
+    private int previousX;
+    private int previousY;
+    private int previousPlayerSteps;
+    private int[] previousTrapWidths;
+    private int[] previousTrapHeights;
 
     private int prizeVal = 10;
     private int trapVal = 10;
@@ -80,17 +86,16 @@ public class GameGUI extends JComponent
         playerLoc = new Point(x, y);
         endSquare = new Rectangle(WIDTH - SPACE_SIZE - 30, 2 * SPACE_SIZE, SPACE_SIZE, SPACE_SIZE);
 
+        totalWalls = 20;
+        totalPrizes = 3;
+        totalTraps = 4;
+
         frame = new JFrame();
         frame.setTitle("EscapeRoom");
         frame.setSize(WIDTH, HEIGHT);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(this);
-        frame.setVisible(true);
         frame.setResizable(false);
-
-        totalWalls = 20;
-        totalPrizes = 3;
-        totalTraps = 4;
     }
 
     public void createBoard()
@@ -104,10 +109,12 @@ public class GameGUI extends JComponent
         walls = new Rectangle[totalWalls];
         createWalls();
         alertNearbyTraps();
+        frame.setVisible(true);
     }
 
     public int movePlayer(int incrx, int incry)
     {
+        saveMoveState();
         int newX = x + incrx;
         int newY = y + incry;
         playerSteps++;
@@ -165,6 +172,29 @@ public class GameGUI extends JComponent
         repaint();
         alertNearbyTraps();
         return 0;
+    }
+
+    public boolean undoLastMove()
+    {
+        if (!hasPreviousMove)
+        {
+            System.out.println("There is no move to undo.");
+            return false;
+        }
+
+        x = previousX;
+        y = previousY;
+        playerSteps = previousPlayerSteps;
+        playerLoc.setLocation(x, y);
+
+        for (int i = 0; i < traps.length; i++)
+        {
+            traps[i].setSize(previousTrapWidths[i], previousTrapHeights[i]);
+        }
+
+        hasPreviousMove = false;
+        repaint();
+        return true;
     }
 
     public boolean isTrapAtOffset(int offx, int offy)
@@ -284,6 +314,8 @@ public class GameGUI extends JComponent
         x = START_LOC_X;
         y = START_LOC_Y;
         playerSteps = 0;
+        playerLoc.setLocation(x, y);
+        hasPreviousMove = false;
         repaint();
         return win;
     }
@@ -308,7 +340,7 @@ public class GameGUI extends JComponent
     public boolean hasReachedEnd()
     {
         Rectangle playerRect = new Rectangle(x, y, 40, 40);
-        return endSquare.intersects(playerRect) || endSquare.contains(playerRect);
+        return endSquare.intersects(playerRect);
     }
 
     public void paintComponent(Graphics g)
@@ -359,6 +391,23 @@ public class GameGUI extends JComponent
             int w = rand.nextInt(GRID_W);
             prizes[numPrizes] = new Rectangle((w * s + 15), (h * s + 15), 15, 15);
         }
+    }
+
+    private void saveMoveState()
+    {
+        previousX = x;
+        previousY = y;
+        previousPlayerSteps = playerSteps;
+        previousTrapWidths = new int[traps.length];
+        previousTrapHeights = new int[traps.length];
+
+        for (int i = 0; i < traps.length; i++)
+        {
+            previousTrapWidths[i] = traps[i].width;
+            previousTrapHeights[i] = traps[i].height;
+        }
+
+        hasPreviousMove = true;
     }
 
     private void createTraps()
