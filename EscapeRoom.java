@@ -16,13 +16,14 @@ public class EscapeRoom
 
         boolean play = true;
         boolean endedByEndCommand = false;
+        int scoreBeforeLastMove = 0;
 
         while (play)
         {
             System.out.print(">");
             String cmd = UserInput.getValidInput(validCommands).toLowerCase();
             int[] moveDelta = UserInput.getMoveDelta(cmd, stepSize);
-            int moveScore = 0;
+            int moveScore;
 
             if (cmd.equals("quit") || cmd.equals("q"))
             {
@@ -42,6 +43,14 @@ public class EscapeRoom
                 score = 0;
                 game.replay();
                 System.out.println("Game has been reset.");
+            }
+            else if (cmd.equals("undo"))
+            {
+                if (game.undoLastMove())
+                {
+                    score = scoreBeforeLastMove;
+                    System.out.println("Last move undone.");
+                }
             }
             else if (cmd.equals("check") || cmd.equals("c"))
             {
@@ -87,6 +96,7 @@ public class EscapeRoom
             }
             else if (moveDelta[0] != 0 || moveDelta[1] != 0)
             {
+                scoreBeforeLastMove = score;
                 moveScore = game.movePlayer(moveDelta[0], moveDelta[1]);
                 score -= 1;
                 score += moveScore;
