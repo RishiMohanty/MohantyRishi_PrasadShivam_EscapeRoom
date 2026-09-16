@@ -53,7 +53,7 @@ public class UserInput
             "right", "left", "up", "down", "r", "l", "u", "d",
             "jump", "jr", "jumpright", "jumpleft", "jl", "jumpup", "ju", "jumpdown", "jd",
             "pickup", "p", "quit", "q", "end", "replay", "help", "?", "spring", "s",
-            "check", "c", "score"
+            "check", "c", "score", "undo"
         };
     }
 
